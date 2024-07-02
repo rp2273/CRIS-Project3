@@ -1,0 +1,45 @@
+<div class="container">
+  <h1>Integration Diagram Data</h1>
+  <label for="project-dropdown">Select Project Name:</label>
+  <select id="project-dropdown" [(ngModel)]="selectedProject" (change)="showTable()">
+    <option *ngFor="let projectName of projectNames" [value]="projectName">{{projectName}}</option>
+  </select>
+  <button id="start-btn" (click)="showTable()">Start</button>
+
+  <table id="data-table" *ngIf="tableVisible">
+    <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Data Received</th>
+        <th>Data Consumed</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of rows; let i = index">
+        <td>
+          <select [(ngModel)]="row.projectName" [disabled]="!row.editable">
+            <option *ngFor="let projectName of projectNames" [value]="projectName">{{projectName}}</option>
+          </select>
+        </td>
+        <td>
+          <select [(ngModel)]="row.dataReceived" [disabled]="!row.editable">
+            <option *ngFor="let dataObject of dataObjects" [value]="dataObject">{{dataObject}}</option>
+          </select>
+        </td>
+        <td>
+          <select [(ngModel)]="row.dataConsumed" [disabled]="!row.editable">
+            <option *ngFor="let dataObject of dataObjects" [value]="dataObject">{{dataObject}}</option>
+          </select>
+        </td>
+        <td>
+          <button (click)="modifyRow(row)">{{ row.editable ? 'Save' : 'Modify' }}</button>
+          <button (click)="deleteRow(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button id="add-row-btn" *ngIf="tableVisible" (click)="addRow()">Add Row</button>
+  <button id="generate-json-btn" *ngIf="tableVisible" (click)="generateJSON()">Generate JSON</button>
+  <pre id="json-output">{{ jsonOutput }}</pre>
+</div>
